@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Setting"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageView
+            android:id="@+id/soundView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/setting"
+            android:layout_marginTop="32dp"
+            android:layout_toStartOf="@+id/setting"
+            android:src="@drawable/sound"
+            app:srcCompat="@drawable/soung" />
+
+        <Switch
+            android:id="@+id/soundSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/soundView"
+            android:layout_alignTop="@+id/soundView"
+            android:layout_toEndOf="@+id/setting"
+            android:checked="false" />
+    </RelativeLayout>
+</LinearLayout>

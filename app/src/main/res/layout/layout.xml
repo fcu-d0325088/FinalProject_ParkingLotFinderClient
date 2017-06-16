@@ -1,19 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="46dp"
-        android:layout_weight="1"
-        android:text="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageButton
+            android:id="@+id/homeIcon"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/home" />
+
+        <ImageButton
+            android:id="@+id/favorite"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/favorite" />
+
+        <ImageButton
+            android:id="@+id/history"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/history" />
+
+        <ImageButton
+            android:id="@+id/setting"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/setting" />
+
+        <ImageButton
+            android:id="@+id/aboutus"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/aboutus" />
+
+    </LinearLayout>
+    <include
+        android:id="@+id/include_first"
+        android:visibility="visible"
+        layout="@layout/first"/>
+    <include
+        android:id="@+id/include_favorite"
+        android:visibility="visible"
+        layout="@layout/favorite"/>
+    <include
+        android:id="@+id/include_setting"
+        android:visibility="visible"
+        layout="@layout/setting"/>
+    <include
+        android:id="@+id/include_history"
+        android:visibility="visible"
+        layout="@layout/history"/>
+    <include
+        android:id="@+id/include_aboutUs"
+        android:visibility="visible"
+        layout="@layout/aboutus"/>
+
 </LinearLayout>
