@@ -24,7 +24,7 @@
             app:srcCompat="@drawable/home" />
 
         <ImageButton
-            android:id="@+id/favorite"
+            android:id="@+id/detial"
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_marginBottom="10dp"

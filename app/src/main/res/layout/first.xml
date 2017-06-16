@@ -2,26 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/detial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="請選擇選項"
+            android:id="@+id/please"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="Favorite"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/favoriteListView"
-            android:layout_below="@+id/detial"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
-
 </LinearLayout>

@@ -5,14 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Switch;
-
-import java.util.ArrayList;
 
 public class profileActivity extends AppCompatActivity {
 
@@ -28,7 +24,7 @@ public class profileActivity extends AppCompatActivity {
         setContentView(R.layout.layout);
         home=(ImageButton)findViewById(R.id.homeIcon);
         aboutUs=(ImageButton)findViewById(R.id.aboutus);
-        favorite=(ImageButton)findViewById(R.id.favorite);
+        favorite=(ImageButton)findViewById(R.id.detial);
         setting=(ImageButton)findViewById(R.id.setting);
         history=(ImageButton)findViewById(R.id.history);
         include_first=findViewById(R.id.include_first);
