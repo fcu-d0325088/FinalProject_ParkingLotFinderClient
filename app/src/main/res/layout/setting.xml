@@ -25,7 +25,7 @@
             android:layout_marginTop="32dp"
             android:layout_toStartOf="@+id/setting"
             android:src="@drawable/sound"
-            app:srcCompat="@drawable/soung" />
+            app:srcCompat="@drawable/sound" />
 
         <Switch
             android:id="@+id/soundSwitch"

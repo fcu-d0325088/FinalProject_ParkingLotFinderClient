@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -93,8 +94,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     };
 
 
-    //-----google map
+
+    //----------------------------------------google map
     public void initialization() {
+
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                new TCPClient().connectToServer();
+            }
+        }.start();
+
+
         showYourPosition = (ImageButton) findViewById(R.id.showYourPositionButton);
 //        Drawable myDrawable = getResources().getDrawable(R.drawable.show_your_position);
 //        showYourPosition.setImageDrawable(myDrawable);
@@ -106,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
 
-
 //        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
 //                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //
@@ -114,15 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
 
 
     public void onClick(View v) {
@@ -131,11 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 GPSisEnabled();
 
                 break;
-//            case R.id.menuButton:
-//                Intent intent = new Intent();
-//                intent.setClass(this,xxx)
-//                startActivity();
-//                break;
+
         }
     }
 
@@ -171,9 +170,33 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Double longitude = location.getLongitude();
             Double latitude = location.getLatitude();
+            int radius = 500;
 
-            // set location
+
+            //    https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=AIzaSyCO853w91kuAN7GQTJxAgF_XHdNIz4g7UY
+
+            String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+            baseUrl += "location=" + latitude + "," + longitude;
+            baseUrl += "&radius="  + radius;
+            baseUrl += "&type=parking";
+            baseUrl += "&key=AIzaSyAOSRwepSct2hKceSp_1kBUC_FaMAcpRCw";
+            Log.v("Url", baseUrl);
+//AIzaSyAOSRwepSct2hKceSp_1kBUC_FaMAcpRCw
+//            AIzaSyCO853w91kuAN7GQTJxAgF_XHdNIz4g7UY
             LatLng yourPositionLatLng = new LatLng(latitude, longitude);
+
+            new PostServer(){
+                @Override
+                public void onResponse(String response) {
+                    super.onResponse(response);
+
+                    Log.v("testing123",response);
+                }
+            }.execute(baseUrl);
+
+
+
+
             yourPositionMarker = new MarkerOptions().position(yourPositionLatLng).title("Your Position");
 
             BitmapDescriptor yourPositionIcon = BitmapDescriptorFactory.fromResource(R.drawable.your_position);
@@ -209,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public boolean onMyLocationButtonClick() {
-//                https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
 
                 return true;
             }
@@ -220,13 +242,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //  mUiSettings.setMyLocationButtonEnabled(true);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         mMap.setMyLocationEnabled(true);

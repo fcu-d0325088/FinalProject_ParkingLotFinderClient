@@ -24,7 +24,7 @@ public class profileActivity extends AppCompatActivity {
         setContentView(R.layout.layout);
         home=(ImageButton)findViewById(R.id.homeIcon);
         aboutUs=(ImageButton)findViewById(R.id.aboutus);
-        favorite=(ImageButton)findViewById(R.id.detial);
+        favorite=(ImageButton)findViewById(R.id.detail);
         setting=(ImageButton)findViewById(R.id.setting);
         history=(ImageButton)findViewById(R.id.history);
         include_first=findViewById(R.id.include_first);
