@@ -37,6 +37,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -139,15 +140,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.showYourPositionButton:
-                GPSisEnabled();
 
-                break;
-
-        }
-    }
 
     public void GPSisEnabled() {
         LocationManager status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
@@ -332,28 +325,53 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public ArrayList<ParkingLot> getParkingLotArray(ArrayList<ParkingLot> parkingLotArrayList) {
-        addMarker(parkingLotArrayList);
+    public ArrayList<ParkingLot> getParkingLotArray(final ArrayList<ParkingLot> parkingLotArrayList) {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i =0;i < parkingLotArrayList.size();i++){
+                    LatLng latLng = new LatLng(Double.parseDouble(parkingLotArrayList.get(i).getLatitude()),Double.parseDouble(parkingLotArrayList.get(i).getLng()));
+                    Log.v("abc",""+ Double.parseDouble(parkingLotArrayList.get(i).getLatitude())+","+Double.parseDouble(parkingLotArrayList.get(i).getLng()));
+
+                    MarkerOptions options = new MarkerOptions();
+                    options.position(latLng);
+                    options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(parkingLotArrayList.get(i).getPrice())));//要加價錢
+                    options.title(parkingLotArrayList.get(i).getName());//要加價錢
+
+                    mMap.addMarker(options);
+
+                }
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, ParkingLotDetails.class);
+
+                        for(int i = 0; i < parkingLotArrayList.size();i++){
+                            if(parkingLotArrayList.get(i).getName().equals(marker.getTitle())){
+                                intent.putExtra("obj",parkingLotArrayList.get(i));
+                                break;
+                            }
+                        }
+
+
+                        startActivity(intent);
+
+                    }
+                });
+            }
+        });
+
 
         return null;
     }
 
-    public void addMarker(ArrayList<ParkingLot> parkingLotArrayList){
-        Log.v("abc", parkingLotArrayList.size() + "");
-        final ArrayList<ParkingLot> parkingLotDatas = parkingLotArrayList;
-
-        for (int i = 0; i < parkingLotDatas.size(); i++) {
-            Log.v("abc", parkingLotDatas.size() + "");
-            MarkerOptions options = new MarkerOptions();
-            options.position(new LatLng(Double.parseDouble(parkingLotDatas.get(i).getLatitude()), Double.parseDouble(parkingLotDatas.get(i).getLng())));
-            options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.circle_drawable)));//要加價錢
-            mMap.addMarker(options);
-        }
-    }
-
-
-    private Bitmap getMarkerBitmapFromView(@DrawableRes int resId) {
+    private Bitmap getMarkerBitmapFromView(String price) {
         View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_article_blog_adapter_comment, null);
+        TextView txtPrice = (TextView)customMarkerView.findViewById(R.id.count);
+        txtPrice.setText("$"+(int)Double.parseDouble(price));
 //        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.imageView36);
 //        markerImageView.setImageResource(resId);
         customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -369,6 +387,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         customMarkerView.draw(canvas);
         return returnedBitmap;
     }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.showYourPositionButton:
+                GPSisEnabled();
+
+                break;
+
+        }
+    }
+
+
 
 
     @Override

@@ -67,6 +67,7 @@ public class TCPClient extends Thread {
                     String jsonStr = mBufferIn.readLine();
                     JSONArray jsonArray = new JSONArray(jsonStr);
                     String name,lat,lng,price,distance,address,oph,available;
+                    pl.clear();
 //                    mw.put("lattitude", pl.get(index).getLattitude()+"");
 //                    mw.put("lng", pl.get(index).getLng()+"");
 //                    mw.put("address", pl.get(index).getAddress());
