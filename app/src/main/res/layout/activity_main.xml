@@ -66,15 +66,15 @@
                 app:layout_constraintRight_toRightOf="parent"
                 tools:ignore="ContentDescription,MissingConstraints" />
 
-            <ImageButton
-                android:id="@+id/menuButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/menu"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <!--<ImageButton-->
+                <!--android:id="@+id/menuButton"-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:background="@drawable/menu"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
 
 
             </android.support.constraint.ConstraintLayout>

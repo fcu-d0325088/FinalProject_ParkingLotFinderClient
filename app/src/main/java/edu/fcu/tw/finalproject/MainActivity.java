@@ -4,16 +4,24 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.StrictMode;
 import android.provider.Settings;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,7 +39,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, LocationListener {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, LocationListener,ParkingLotInterface {
     DrawerLayout drawerLayout;
     Boolean openDrawerLayout = false;
     ImageView img_toggle;
@@ -42,14 +52,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationManager lms;
     private UiSettings mUiSettings;
     MarkerOptions yourPositionMarker;
+    TCPClient client = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         initView();
+
         initialization();
+        client  = new TCPClient(this);
+        client.start();
+
+
     }
 
     public void initView() {
@@ -98,20 +120,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //----------------------------------------google map
     public void initialization() {
 
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                new TCPClient().connectToServer();
-            }
-        }.start();
-
-
         showYourPosition = (ImageButton) findViewById(R.id.showYourPositionButton);
 //        Drawable myDrawable = getResources().getDrawable(R.drawable.show_your_position);
 //        showYourPosition.setImageDrawable(myDrawable);
 
-        menuButton = (ImageButton) findViewById(R.id.menuButton);
+//        menuButton = (ImageButton) findViewById(R.id.menuButton);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -217,6 +230,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+
+
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -228,22 +244,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mUiSettings = mMap.getUiSettings();
 
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+        mUiSettings.setMyLocationButtonEnabled(true);
 
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            double lat ,lng;
             @Override
             public boolean onMyLocationButtonClick() {
+                lat =   mMap.getMyLocation().getLatitude();
+                lng =  mMap.getMyLocation().getLongitude();
+                Log.v("LatLng", lat +" , " + lng);
+//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+                client.sendCoodinatetoServer(lat,lng);
+              // getParkingLotArray();
 
-                return true;
+                return false;
             }
         });
 
 
 
-        //  mUiSettings.setMyLocationButtonEnabled(true);
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
+
+
         mMap.setMyLocationEnabled(true);
 
     }
@@ -310,5 +336,47 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onProviderDisabled(String s) {
 
 
+    }
+
+    @Override
+    public ArrayList<ParkingLot> getParkingLotArray(ArrayList<ParkingLot> parkingLotArrayList) {
+        Log.v("result", parkingLotArrayList.get(0).getName());
+        Toast.makeText(this,parkingLotArrayList.get(0).getName() ,Toast.LENGTH_SHORT).show();
+        for(int i=0;i < parkingLotArrayList.size();i++){
+
+            MarkerOptions options = new MarkerOptions();
+            options.position(new LatLng(parkingLotArrayList.get(i).getLattitude(),parkingLotArrayList.get(i).getLng()));
+            Log.v("", parkingLotArrayList.get(i).getName());
+//            options.title();//自己写
+//            options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.circle_drawable)));//要加價錢
+
+        }
+        return null;
+    }
+
+    private Bitmap getMarkerBitmapFromView(@DrawableRes int resId) {
+        View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_article_blog_adapter_comment, null);
+//        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.imageView36);
+//        markerImageView.setImageResource(resId);
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+        customMarkerView.buildDrawingCache();
+        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        Drawable drawable = customMarkerView.getBackground();
+        if (drawable != null)
+            drawable.draw(canvas);
+        customMarkerView.draw(canvas);
+        return returnedBitmap;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        client.closeConnection();
     }
 }
