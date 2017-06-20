@@ -40,8 +40,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, LocationListener,ParkingLotInterface {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, LocationListener, ParkingLotInterface {
     DrawerLayout drawerLayout;
     Boolean openDrawerLayout = false;
     ImageView img_toggle;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         initView();
 
         initialization();
-        client  = new TCPClient(this);
+        client = new TCPClient(this, this);
         client.start();
 
 
@@ -116,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     };
 
 
-
     //----------------------------------------google map
     public void initialization() {
 
@@ -137,8 +137,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            return;
 //        }
     }
-
-
 
 
     public void onClick(View v) {
@@ -169,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.clear();
         lms = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
@@ -179,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getLocation(Location location) {
-        if(location != null) {
+        if (location != null) {
 
             Double longitude = location.getLongitude();
             Double latitude = location.getLatitude();
@@ -190,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
             baseUrl += "location=" + latitude + "," + longitude;
-            baseUrl += "&radius="  + radius;
+            baseUrl += "&radius=" + radius;
             baseUrl += "&type=parking";
             baseUrl += "&key=AIzaSyAOSRwepSct2hKceSp_1kBUC_FaMAcpRCw";
             Log.v("Url", baseUrl);
@@ -198,16 +196,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            AIzaSyCO853w91kuAN7GQTJxAgF_XHdNIz4g7UY
             LatLng yourPositionLatLng = new LatLng(latitude, longitude);
 
-            new PostServer(){
+            new PostServer() {
                 @Override
                 public void onResponse(String response) {
                     super.onResponse(response);
 
-                    Log.v("testing123",response);
+                    Log.v("testing123", response);
                 }
             }.execute(baseUrl);
-
-
 
 
             yourPositionMarker = new MarkerOptions().position(yourPositionLatLng).title("Your Position");
@@ -222,15 +218,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
             mMap.moveCamera(locat);
             mMap.animateCamera(zoom);
-        }
-        else {
+        } else {
             Toast.makeText(this, "無法定位座標", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
 
 
         mMap = googleMap;
@@ -248,26 +242,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            double lat ,lng;
+            double lat, lng;
+
             @Override
             public boolean onMyLocationButtonClick() {
-                lat =   mMap.getMyLocation().getLatitude();
-                lng =  mMap.getMyLocation().getLongitude();
-                Log.v("LatLng", lat +" , " + lng);
+                lat = mMap.getMyLocation().getLatitude();
+                lng = mMap.getMyLocation().getLongitude();
+                Log.v("LatLng", lat + " , " + lng);
 //                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
-                client.sendCoodinatetoServer(lat,lng);
-              // getParkingLotArray();
+                client.sendCoodinatetoServer(lat, lng);
+                // getParkingLotArray();
 
                 return false;
             }
         });
 
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
 
 
         mMap.setMyLocationEnabled(true);
@@ -276,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     TextView mTapTextView;
 
-    public void onMapClick(LatLng point){
+    public void onMapClick(LatLng point) {
         Toast.makeText(this, "Tapped, point =" + point, Toast.LENGTH_SHORT).show();
         //mTapTextView.setText("tapped, point =" + point);
     }
@@ -316,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //    }
 //
 //
-    private void setCamera(Location location){
+    private void setCamera(Location location) {
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(
 //            new LatLng(location.getLatitude(),location.getLongitude())));
     }
@@ -340,19 +333,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public ArrayList<ParkingLot> getParkingLotArray(ArrayList<ParkingLot> parkingLotArrayList) {
-        Log.v("result", parkingLotArrayList.get(0).getName());
-        Toast.makeText(this,parkingLotArrayList.get(0).getName() ,Toast.LENGTH_SHORT).show();
-        for(int i=0;i < parkingLotArrayList.size();i++){
+        addMarker(parkingLotArrayList);
 
-            MarkerOptions options = new MarkerOptions();
-            options.position(new LatLng(parkingLotArrayList.get(i).getLattitude(),parkingLotArrayList.get(i).getLng()));
-            Log.v("", parkingLotArrayList.get(i).getName());
-//            options.title();//自己写
-//            options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.circle_drawable)));//要加價錢
-
-        }
         return null;
     }
+
+    public void addMarker(ArrayList<ParkingLot> parkingLotArrayList){
+        Log.v("abc", parkingLotArrayList.size() + "");
+        final ArrayList<ParkingLot> parkingLotDatas = parkingLotArrayList;
+
+        for (int i = 0; i < parkingLotDatas.size(); i++) {
+            Log.v("abc", parkingLotDatas.size() + "");
+            MarkerOptions options = new MarkerOptions();
+            options.position(new LatLng(Double.parseDouble(parkingLotDatas.get(i).getLatitude()), Double.parseDouble(parkingLotDatas.get(i).getLng())));
+            options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.circle_drawable)));//要加價錢
+            mMap.addMarker(options);
+        }
+    }
+
 
     private Bitmap getMarkerBitmapFromView(@DrawableRes int resId) {
         View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_article_blog_adapter_comment, null);
