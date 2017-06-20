@@ -30,8 +30,8 @@ public class Favorites extends AppCompatActivity {
 //         Instanciating an array list (you don't need to do this,
 //         you already have yours).
         List<String> your_array_list = new ArrayList<String>();
-        if(!settingPreferences.getString("Details","").equals("")){
-            your_array_list.add(settingPreferences.getString("Details",""));
+        if(!settingPreferences.getString("Detail","").equals("")){
+            your_array_list.add(settingPreferences.getString("Detail",""));
         }
 
 

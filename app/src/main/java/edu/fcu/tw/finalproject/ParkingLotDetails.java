@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,7 +40,13 @@ public class ParkingLotDetails extends AppCompatActivity {
         your_array_list.add("Address: "+ pl.getAddress());
         your_array_list.add("Price: "+ pl.getPrice());
         your_array_list.add("Available Slots Left: "+ pl.getAvailable());
-        your_array_list.add("Opening hours: "+ pl.getOpR());
+        if(pl.getOpR().equals("")){
+            your_array_list.add("Opening hours: Undefine");
+        }
+        else{
+            your_array_list.add("Opening hours: "+ pl.getOpR());
+
+        }
 
         details = pl.getName() + " : " + pl.getAddress();
 
@@ -49,6 +56,7 @@ public class ParkingLotDetails extends AppCompatActivity {
             public void onClick(View view) {
                 settingPreferencesEditor.putString("Detail",details);
                 settingPreferencesEditor.commit();
+                Log.v("button clicked", "!");
             }
         });
 

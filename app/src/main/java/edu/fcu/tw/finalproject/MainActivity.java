@@ -98,15 +98,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void initView() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);//函数来关闭手势滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         img_toggle = (ImageView) findViewById(R.id.img_toggle);
         img_toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (openDrawerLayout) {//如果是打开的,就关闭侧滑菜单
+                if (openDrawerLayout) {
                     drawerLayout.closeDrawers();
                 } else {
-                    drawerLayout.openDrawer(Gravity.LEFT);//布局中设置从左边打开,这里也要设置为左边打开
+                    drawerLayout.openDrawer(Gravity.LEFT);
                 }
             }
         });
@@ -115,21 +115,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout.DrawerListener drawerlayoutListerner = new DrawerLayout.SimpleDrawerListener() {
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
-            //slideOffset 变化范围0~1
-            View contentView = drawerLayout.getChildAt(0);//获得content
+
+            View contentView = drawerLayout.getChildAt(0);
             View leftView = drawerView;
 
-            contentView.setTranslationX(leftView.getMeasuredWidth() * slideOffset);//平移
+            contentView.setTranslationX(leftView.getMeasuredWidth() * slideOffset);
         }
 
-        //当侧滑菜单关闭
+
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             openDrawerLayout = false;
         }
 
-        //当侧滑菜单打开
+
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
