@@ -57,7 +57,7 @@ public class TCPClient extends Thread {
         pl = new ArrayList<ParkingLot>();
         Log.v("run","running");
         try{
-            client = new Socket("10.0.2.10",PORT_NUMBER);
+            client = new Socket("172.20.10.6",PORT_NUMBER);
             writer = new PrintStream(client.getOutputStream(),true,"UTF-8");
             mBufferIn  = new BufferedReader(new InputStreamReader(client.getInputStream(),"UTF-8"));
 

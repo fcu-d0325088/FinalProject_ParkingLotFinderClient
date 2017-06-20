@@ -18,14 +18,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-            <ImageView
-                android:id="@+id/img_toggle"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="25dp"
-                android:src="@mipmap/ic_launcher" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_toggle"
+                    android:layout_width="30dp"
+                    android:layout_height="32dp"
+                    android:src="@mipmap/ic_launcher"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -51,20 +61,6 @@
             android:layout_height="match_parent"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
-
-            <ImageButton
-                android:id="@+id/showYourPositionButton"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/show_your_position"
-                android:contentDescription=""
-                android:onClick="onClick"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                tools:ignore="ContentDescription,MissingConstraints" />
 
             <!--<ImageButton-->
                 <!--android:id="@+id/menuButton"-->

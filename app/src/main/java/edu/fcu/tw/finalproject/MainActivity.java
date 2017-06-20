@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     DrawerLayout drawerLayout;
     Boolean openDrawerLayout = false;
     ImageView img_toggle;
-
+    ImageButton aboutUs,favorite;
     //--------google map
     private GoogleMap mMap;
     public ImageButton showYourPosition, menuButton;
@@ -61,6 +61,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        aboutUs=(ImageButton)findViewById(R.id.iv_aboutUs);
+        favorite=(ImageButton)findViewById(R.id.iv_favorite);
+
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setClass(MainActivity.this,Favorites.class);
+                startActivity(intent);
+            }
+        });
+        aboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setClass(MainActivity.this,AboutUs.class);
+                startActivity(intent);
+            }
+        });
 
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -121,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //----------------------------------------google map
     public void initialization() {
 
-        showYourPosition = (ImageButton) findViewById(R.id.showYourPositionButton);
+//        showYourPosition = (ImageButton) findViewById(R.id.showYourPositionButton);
 //        Drawable myDrawable = getResources().getDrawable(R.drawable.show_your_position);
 //        showYourPosition.setImageDrawable(myDrawable);
 
@@ -388,15 +408,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return returnedBitmap;
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.showYourPositionButton:
-                GPSisEnabled();
-
-                break;
-
-        }
-    }
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.showYourPositionButton:
+//                GPSisEnabled();
+//
+//                break;
+//
+//        }
+//    }
 
 
 

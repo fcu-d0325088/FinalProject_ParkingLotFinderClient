@@ -12,19 +12,14 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <ImageButton
-            android:id="@+id/homeIcon"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:background="#00ffffff"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/home" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/parking" />
 
         <ImageButton
-            android:id="@+id/detail"
+            android:id="@+id/iv_favorite"
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_marginBottom="10dp"
@@ -34,25 +29,7 @@
             app:srcCompat="@drawable/favorite" />
 
         <ImageButton
-            android:id="@+id/history"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="#00ffffff"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/history" />
-
-        <ImageButton
-            android:id="@+id/setting"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="#00ffffff"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/setting" />
-
-        <ImageButton
-            android:id="@+id/aboutus"
+            android:id="@+id/iv_aboutUs"
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -60,26 +37,27 @@
             android:scaleType="centerInside"
             app:srcCompat="@drawable/aboutus" />
 
-    </LinearLayout>
-    <include
-        android:id="@+id/include_first"
-        android:visibility="visible"
-        layout="@layout/first"/>
-    <include
-        android:id="@+id/include_favorite"
-        android:visibility="visible"
-        layout="@layout/favorite"/>
-    <include
-        android:id="@+id/include_setting"
-        android:visibility="visible"
-        layout="@layout/setting"/>
-    <include
-        android:id="@+id/include_history"
-        android:visibility="visible"
-        layout="@layout/history"/>
-    <include
-        android:id="@+id/include_aboutUs"
-        android:visibility="visible"
-        layout="@layout/about_us"/>
+        <!--</LinearLayout>-->
+    <!--<include-->
+        <!--android:id="@+id/include_first"-->
+        <!--android:visibility="visible"-->
+        <!--layout="@layout/first"/>-->
+    <!--<include-->
+        <!--android:id="@+id/include_favorite"-->
+        <!--android:visibility="visible"-->
+        <!--layout="@layout/favorite"/>-->
+    <!--<include-->
+        <!--android:id="@+id/include_setting"-->
+        <!--android:visibility="visible"-->
+        <!--layout="@layout/setting"/>-->
+    <!--<include-->
+        <!--android:id="@+id/include_history"-->
+        <!--android:visibility="visible"-->
+        <!--layout="@layout/history"/>-->
+    <!--<include-->
+        <!--android:id="@+id/include_aboutUs"-->
+        <!--android:visibility="visible"-->
+        <!--layout="@layout/about_us"/>-->
 
+    </LinearLayout>
 </LinearLayout>

@@ -8,23 +8,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="Park Details"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <ListView
-            android:id="@+id/lv_parkingLotDetails"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/detail" >
+            android:orientation="vertical">
 
-        </ListView>
+            <TextView
+                android:id="@+id/detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Park Details"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ListView
+                android:id="@+id/lv_parkingLotDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/detail"
+                android:layout_weight="1">
+
+            </ListView>
+
+            <Button
+                android:id="@+id/add_btn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Add to Fav" />
+        </LinearLayout>
 
     </RelativeLayout>
 
